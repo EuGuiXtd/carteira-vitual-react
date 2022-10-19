@@ -1,33 +1,79 @@
 /* eslint react/jsx-key: 0 */
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function WalletForm() {
-  const { currencies } = useContext(AppContext);
+  const { currencies, addExpenses } = useContext(AppContext);
+
+  const [value, setValue] = useState();
+  const [description, setDescription] = useState();
+  const [currency, setCurrency] = useState('USD');
+  const [method, setMethod] = useState();
+  const [tag, setTag] = useState();
+
+  // console.log(expenses);
+  // console.log(value);
 
   return (
     <>
-      <input data-testid="value-input" />
-      <input data-testid="description-input" />
-      <select name="Moeda" data-testid="currency-input">
+      <input
+        value={ value }
+        data-testid="value-input"
+        onChange={ (e) => setValue(e.target.value) }
+      />
+      <input
+        value={ description }
+        data-testid="description-input"
+        onChange={ (e) => setDescription(e.target.value) }
+      />
+      <select
+        name="Moeda"
+        data-testid="currency-input"
+        onChange={ (e) => { setCurrency(e.target.value); } }
+      >
         {currencies.map((money) => (
-          <option key={ money }>
+          <option key={ money } value={ money }>
             {money}
           </option>
         ))}
       </select>
-      <select name="Metodo Pagamento" data-testid="method-input">
-        <option value="Din">Dinheiro</option>
-        <option value="CC">Cartão de crédito</option>
-        <option value="CD">Cartão de débito</option>
+      <select
+        name="Metodo Pagamento"
+        data-testid="method-input"
+        onChange={ (e) => { setMethod(e.target.value); } }
+      >
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="Cartão de crédito">Cartão de crédito</option>
+        <option value="Cartão de débito">Cartão de débito</option>
       </select>
-      <select name="Categoria" data-testid="tag-input">
-        <option value="AL">Alimentação</option>
-        <option value="LA">Lazer</option>
-        <option value="TB">Trabalho</option>
-        <option value="TP">Transporte</option>
-        <option value="SA">Saúde</option>
+      <select
+        name="Categoria"
+        data-testid="tag-input"
+        onChange={ (e) => { setTag(e.target.value); } }
+      >
+        <option value="Alimentação">Alimentação</option>
+        <option value="Lazer">Lazer</option>
+        <option value="Trabalho">Trabalho</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Saúde">Saúde</option>
       </select>
+      <button
+        type="button"
+        onClick={ () => {
+          addExpenses({
+            value,
+            description,
+            currency,
+            method,
+            tag,
+          });
+          setValue('');
+          setDescription('');
+        } }
+      >
+        Adicionar despesa
+      </button>
+
     </>
   );
 }
