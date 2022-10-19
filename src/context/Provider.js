@@ -1,7 +1,5 @@
-/* eslint react/prop-types: 0 */
-/* eslint react/jsx-no-constructed-context-values: 0 */
-
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import AppContext from './AppContext';
 
 async function getCurrencies() {
@@ -13,7 +11,7 @@ async function getCurrencies() {
 
 function Provider({ children }) {
   const [user, setUser] = useState({ email: '' });
-  const [currencies, setCurrencies] = useState({});
+  const [currencies, setCurrencies] = useState([]);
 
   useEffect(() => {
     getCurrencies().then((d) => {
@@ -22,12 +20,12 @@ function Provider({ children }) {
     });
   }, []);
 
-  const contextValue = {
+  const contextValue = useMemo(() => ({
     user,
     setUser,
     currencies,
     setCurrencies,
-  };
+  }), [user, currencies]);
 
   function getState() {
     return {
@@ -48,5 +46,9 @@ function Provider({ children }) {
     </AppContext.Provider>
   );
 }
+
+Provider.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 export default Provider;
