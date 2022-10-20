@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import AppContext from '../context/AppContext';
 
 function Table() {
+  const { expenses } = useContext(AppContext);
+
+  console.log(expenses);
+
   return (
     <table border="1">
       {' '}
@@ -17,6 +22,22 @@ function Table() {
           <th>Editar/Excluir</th>
         </tr>
       </thead>
+      <tbody>
+        {expenses.map((e, i) => (
+          <tr key={ i }>
+            <td>{e.description}</td>
+            <td>{e.tag}</td>
+            <td>{e.method}</td>
+            <td>{Number(e.value).toFixed(2)}</td>
+            <td>{e.exchangeRates[e.currency].name}</td>
+            <td>{Number(e.exchangeRates[e.currency].ask).toFixed(2)}</td>
+            <td>
+              {(Number(e.value) * Number(e.exchangeRates[e.currency].ask)).toFixed(2)}
+            </td>
+            <td>Real</td>
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 }
