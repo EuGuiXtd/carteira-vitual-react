@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -9,14 +8,18 @@ import Provider from '../context/Provider';
 
 let user = { email: '123' };
 
+function setUser(v) {
+  user = v;
+}
+
+function addExpenses() {}
+
+const value = { user, setUser, currencies: ['123,456'], addExpenses };
+
 describe('60% de cobertura total da aplicação', () => {
   test('Verifica e existe página de login', () => {
-    function setUser(v) {
-      user = v;
-    }
-
     renderWithRouter(
-      <AppContext.Provider value={ { user, setUser, currencies: ['123,456'] } }>
+      <AppContext.Provider value={ value }>
         <App />
       </AppContext.Provider>,
     );
@@ -43,14 +46,6 @@ describe('60% de cobertura total da aplicação', () => {
   });
 
   test('Verifica a página de carteiras', () => {
-    function setUser(v) {
-      user = v;
-    }
-
-    function addExpenses() {}
-
-    const value = { user, setUser, currencies: ['123', '456'], addExpenses };
-
     const { history } = renderWithRouter(
       <AppContext.Provider value={ value }>
         <App />
