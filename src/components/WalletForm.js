@@ -11,9 +11,6 @@ function WalletForm() {
   const [method, setMethod] = useState();
   const [tag, setTag] = useState();
 
-  // console.log(expenses);
-  // console.log(value);
-
   return (
     <>
       <input

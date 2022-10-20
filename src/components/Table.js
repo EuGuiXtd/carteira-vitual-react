@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { expenses } = useContext(AppContext);
-
-  console.log(expenses);
+  const { expenses, deletaExpense } = useContext(AppContext);
 
   return (
     <table border="1">
@@ -35,6 +33,15 @@ function Table() {
               {(Number(e.value) * Number(e.exchangeRates[e.currency].ask)).toFixed(2)}
             </td>
             <td>Real</td>
+            <td>
+              <button
+                type="button"
+                data-testid="delete-btn"
+                onClick={ () => { deletaExpense(i); } }
+              >
+                Apagar
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>

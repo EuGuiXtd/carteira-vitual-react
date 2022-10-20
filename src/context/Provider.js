@@ -39,11 +39,24 @@ function Provider({ children }) {
     let total = 0;
     newExpenses.forEach((e) => {
       const taxa = newExpense.exchangeRates[e.currency].ask;
-      console.log(taxa);
-      console.log(Number(e.value) * Number(taxa));
       total += Number(e.value) * Number(taxa);
     });
     setAsk(total.toFixed(2));
+  }, [expenses]);
+
+  const deletaExpense = useCallback((i) => {
+    console.log(i);
+    console.log(expenses);
+    const newExpenses = expenses;
+    newExpenses.splice(i, 1);
+    console.log(newExpenses);
+    let total = 0;
+    newExpenses.forEach((e) => {
+      const taxa = e.exchangeRates[e.currency].ask;
+      total += Number(e.value) * Number(taxa);
+    });
+    setAsk(total.toFixed(2));
+    setExpenses(newExpenses);
   }, [expenses]);
 
   const contextValue = useMemo(() => ({
@@ -53,8 +66,9 @@ function Provider({ children }) {
     setCurrencies,
     expenses,
     addExpenses,
+    deletaExpense,
     ask,
-  }), [user, currencies, expenses, addExpenses, ask]);
+  }), [user, currencies, expenses, addExpenses, ask, deletaExpense]);
 
   function getState() {
     return {
