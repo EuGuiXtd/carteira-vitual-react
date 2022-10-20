@@ -21,8 +21,8 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {expenses.map((e, i) => (
-          <tr key={ i }>
+        {expenses.map((e) => (
+          <tr key={ e.id }>
             <td>{e.description}</td>
             <td>{e.tag}</td>
             <td>{e.method}</td>
@@ -40,7 +40,7 @@ function Table() {
                 id={ e.id }
                 onClick={ () => { deletaExpense(e.id); } }
               >
-                Apagar
+                Excluir
               </button>
             </td>
           </tr>
