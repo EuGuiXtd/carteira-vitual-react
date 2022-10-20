@@ -42,6 +42,7 @@ function Login() {
       <input data-testid="password-input" onChange={ (e) => verificaPassword(e) } />
       <button
         type="button"
+        data-testid="botao_entrar"
         disabled={ !emailOK || !passswordOK }
         onClick={ () => {
           history.push('/carteira');
