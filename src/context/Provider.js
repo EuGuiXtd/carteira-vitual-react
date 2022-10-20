@@ -44,12 +44,8 @@ function Provider({ children }) {
     setAsk(total.toFixed(2));
   }, [expenses]);
 
-  const deletaExpense = useCallback((i) => {
-    console.log(i);
-    console.log(expenses);
-    const newExpenses = expenses;
-    newExpenses.splice(i, 1);
-    console.log(newExpenses);
+  const deletaExpense = useCallback((id) => {
+    const newExpenses = expenses.filter((e) => e.id !== id);
     let total = 0;
     newExpenses.forEach((e) => {
       const taxa = e.exchangeRates[e.currency].ask;

@@ -37,7 +37,8 @@ function Table() {
               <button
                 type="button"
                 data-testid="delete-btn"
-                onClick={ () => { deletaExpense(i); } }
+                id={ e.id }
+                onClick={ () => { deletaExpense(e.id); } }
               >
                 Apagar
               </button>
