@@ -56,6 +56,7 @@ function WalletForm() {
       </select>
       <button
         type="button"
+        data-testid="btn-add"
         onClick={ () => {
           if (estado === null) {
             addExpenses({

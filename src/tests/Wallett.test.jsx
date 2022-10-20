@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWith';
@@ -8,13 +8,24 @@ import Provider from '../context/Provider';
 
 let user = { email: '123' };
 
+const expenses = [];
+
 function setUser(v) {
   user = v;
 }
 
 function addExpenses() {}
 
-const value = { user, setUser, currencies: ['123,456'], addExpenses };
+function edtExpenses() {}
+
+const value = {
+  user,
+  setUser,
+  currencies: ['123,456'],
+  addExpenses,
+  expenses,
+  edtExpenses,
+};
 
 describe('60% de cobertura total da aplicação', () => {
   test('Verifica e existe página de login', () => {
@@ -42,7 +53,26 @@ describe('60% de cobertura total da aplicação', () => {
       </Provider>,
     );
 
-    expect(ret).toBeVisible();
+    expect(ret).toBeInstanceOf(Object);
+  });
+
+  test('Teste Provier 2', () => {
+    function TesteProvider() {
+      const provider = useContext(AppContext);
+
+      provider.addExpenses({});
+      provider.edtExpenses({});
+
+      console.log('123', provider);
+    }
+
+    const ret = renderWithRouter(
+      <Provider>
+        <TesteProvider />
+      </Provider>,
+    );
+
+    expect(ret).toBeInstanceOf(Object);
   });
 
   test('Verifica a página de carteiras', () => {
@@ -67,7 +97,7 @@ describe('60% de cobertura total da aplicação', () => {
     const descricao = screen.getByTestId('description-input');
     // const moeda = screen.getAllByTestId('currency-input');
     const valorTotal = screen.getByTestId('total-field');
-    const botaoDespesa = screen.getByRole('button', { name: /adicionar despesa/i });
+    const botaoDespesa = screen.getByTestId('btn-add');
 
     expect(valor).toBeInTheDocument();
     expect(valorTotal).toBeInTheDocument();
