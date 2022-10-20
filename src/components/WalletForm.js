@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function WalletForm() {
-  const { currencies, addExpenses } = useContext(AppContext);
+  const { currencies, addExpenses, estado, edtExpenses } = useContext(AppContext);
 
   const [value, setValue] = useState();
   const [description, setDescription] = useState();
@@ -57,18 +57,28 @@ function WalletForm() {
       <button
         type="button"
         onClick={ () => {
-          addExpenses({
-            value,
-            description,
-            currency,
-            method,
-            tag,
-          });
+          if (estado === null) {
+            addExpenses({
+              value,
+              description,
+              currency,
+              method,
+              tag,
+            });
+          } else {
+            edtExpenses({
+              value,
+              description,
+              currency,
+              method,
+              tag,
+            });
+          }
           setValue('');
           setDescription('');
         } }
       >
-        Adicionar despesa
+        {estado === null ? 'Adicionar despesa' : 'Editar despesa'}
       </button>
 
     </>

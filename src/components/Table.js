@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { expenses, deletaExpense } = useContext(AppContext);
+  const { expenses, deletaExpense, setEstado } = useContext(AppContext);
 
   return (
     <table border="1">
@@ -34,6 +34,16 @@ function Table() {
             </td>
             <td>Real</td>
             <td>
+              <button
+                type="button"
+                data-testid="edit-btn"
+                id={ e.id }
+                onClick={ () => {
+                  setEstado(e.id);
+                } }
+              >
+                Editar
+              </button>
               <button
                 type="button"
                 data-testid="delete-btn"

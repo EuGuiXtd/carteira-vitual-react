@@ -14,6 +14,7 @@ function Provider({ children }) {
   const [ask, setAsk] = useState(0);
   const [currencies, setCurrencies] = useState([]);
   const [expenses, setExpenses] = useState([]);
+  const [estado, setEstado] = useState(null);
 
   useEffect(() => {
     getCurrencies().then((d) => {
@@ -44,6 +45,38 @@ function Provider({ children }) {
     setAsk(total.toFixed(2));
   }, [expenses]);
 
+  const edtExpenses = useCallback(async (
+    { value, description, currency, method, tag },
+  ) => {
+    console.log(estado);
+    console.log(description);
+    console.log(expenses);
+    const eExpenses = expenses;
+    let idx;
+    eExpenses.forEach((e, i) => { if (e.id === estado) idx = i; });
+    console.log('idx', idx);
+    let eExpense = eExpenses[idx];
+    console.log(eExpense);
+    eExpense = {
+      ...eExpense,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    };
+    console.log(eExpense);
+    eExpenses[idx] = eExpense;
+    console.log(eExpenses);
+    setExpenses(eExpenses);
+    let total = 0;
+    eExpenses.forEach((e) => {
+      const taxa = eExpense.exchangeRates[e.currency].ask;
+      total += Number(e.value) * Number(taxa);
+    });
+    setAsk(total.toFixed(2));
+  }, [expenses, estado]);
+
   const deletaExpense = useCallback((id) => {
     const newExpenses = expenses.filter((e) => e.id !== id);
     let total = 0;
@@ -64,7 +97,20 @@ function Provider({ children }) {
     addExpenses,
     deletaExpense,
     ask,
-  }), [user, currencies, expenses, addExpenses, ask, deletaExpense]);
+    estado,
+    setEstado,
+    edtExpenses,
+  }), [
+    user,
+    currencies,
+    expenses,
+    addExpenses,
+    ask,
+    deletaExpense,
+    estado,
+    setEstado,
+    edtExpenses,
+  ]);
 
   function getState() {
     return {
